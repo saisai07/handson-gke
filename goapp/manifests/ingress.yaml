@@ -6,10 +6,6 @@ metadata:
   annotations:
     kubernetes.io/ingress.global-static-ip-name: "gcpug-go-ip"
 spec:
-  rules:
-  - http:
-      paths:
-      - path: /
-        backend:
-          serviceName: go-app-service
-          servicePort: 8081
+  backend:
+    serviceName: go-app-service
+    servicePort: 8080

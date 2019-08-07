@@ -1,8 +1,8 @@
-FROM golang:1.12.7-alpine3.10 as build
+FROM golang:1.12.7-alpine3.10
 
-WORKDIR /go/src/app
+WORKDIR $GOPATH/src/gcpug
 COPY main.go main.go
+RUN go build . && \
+    cp gcpug /usr/local/bin/gcpug
 
-RUN go build .
-
-CMD ["app"]
+CMD ["gcpug"]

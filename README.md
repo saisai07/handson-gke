@@ -27,14 +27,14 @@ gcloud container clusters create gcpug-sendai --enable-ip-alias --num-nodes=1 --
 gcloud container clusters list
 ```
 
-ノードも出来ている
-```
-kubectl get nodes
-```
-
 ### 2.2 クラスターに接続
 ```
 gcloud container clusters get-credentials gcpug-sendai --zone us-central1-a
+```
+
+ノードも出来ている
+```
+kubectl get nodes
 ```
 
 ## 3.Namespaceの作成
@@ -79,18 +79,10 @@ kubectl -n gcpug get deployments
 kubectl -n gcpug get pods
 ```
 
-## 6.サービスの公開
-### 6.1 静的IPの確保
-LBに割り当てるグローバルIPを取得します
-
-```
-gcloud compute addresses create gcpug-go-ip \
-     --global \
-    --ip-version IPV4
-```
-
-### 6.2 Serviceの作成
+## 6. 公開
+### 6.1 Serviceの作成
 ServiceとはPodのエンドポイントを一つにグルーピングしたもの
+LBにもできるのでまずはLBで作ってみます
 
 ```
 kubectl apply -f manifests/service.yaml
@@ -100,8 +92,47 @@ kubectl apply -f manifests/service.yaml
 kubectl -n gcpug get svc
 ```
 
-### 6.3 Ingressの作成
-IngressとはHTTPSレイヤーのLB
+グローバルIPが振られるのでブラウザでアクセス
+これで公開が完了
+
+### 6.2 Ingress経由でアクセスするように変更する
+service.yamlのtypeをNodePortに変更
+```
+kind: Service
+apiVersion: v1
+metadata:
+  name: go-app-service
+  namespace: gcpug
+spec:
+  type: NordPort
+  selector:
+    app: go-app
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+```
+
+変更を適用
+
+```
+kubectl apply -f manifests/service.yaml
+```
+
+```
+kubectl -n gcpug get svc
+```
+
+### 6.3 静的IPの確保
+LBに割り当てるグローバルIPを取得します
+
+```
+gcloud compute addresses create gcpug-go-ip \
+     --global \
+    --ip-version IPV4
+```
+
+### 6.4 Ingressの作成
 
 ```
 kubectl apply -f manifests/ingress.yaml
@@ -110,6 +141,11 @@ kubectl apply -f manifests/ingress.yaml
 ```
 kubectl -n gcpug get ing
 ```
+
+### 7 おまけ
+Pod内に2個コンテナがあるパターン
+今回はphpとnginxの２コンテナの構成にしています
+
 
 ## お掃除
 

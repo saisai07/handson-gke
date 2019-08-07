@@ -18,6 +18,7 @@ spec:
       containers:
       - name: go-app
         image: gcr.io/[PROJECT_ID]/gcpug-go:v1
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
           protocol: TCP
