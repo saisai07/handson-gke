@@ -101,7 +101,7 @@ kubectl -n gcpug get svc
 ```
 
 ### 6.3 Ingressの作成
-サービスとはPodのエンドポイントを一つにグルーピングしたもの
+IngressとはHTTPSレイヤーのLB
 
 ```
 kubectl apply -f manifests/ingress.yaml
