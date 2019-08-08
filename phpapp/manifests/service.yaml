@@ -4,7 +4,7 @@ metadata:
   name: php-app-service
   namespace: gcpug
 spec:
-  type: LoadBalancer
+  type: NordPort
   selector:
     app: php-app
   ports:

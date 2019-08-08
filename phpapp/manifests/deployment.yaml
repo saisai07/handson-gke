@@ -11,29 +11,34 @@ spec:
   selector:
     matchLabels:
       app: php-app
-  volumes:
-    - name: src-data
-      emptyDir: {}
-  containers:
-  - name: nginx
-    image: gcr.io/[PROJECT_ID]/gcpug-nginx:v1
-    ports:
-    - containerPort: 80
-      protocol: TCP
-    volumeMounts:
-      - mountPath: /var/www/html
-        name: src-data
-  - name: php
-    image: gcr.io/jcgp-develop/php:v1
-    imagePullPolicy: Always
-    ports:
-    - containerPort: 9000
-      protocol: TCP
-    volumeMounts:
-      - mountPath: /var/www/html
-        name: src-data
-    lifecycle:
-      postStart:
-        exec:
-          command: ["/bin/sh", "-c", "cp -r /app/. /var/www/html"]
+  template:
+    metadata:
+      labels:
+        app: php-app
+    spec:
+      volumes:
+        - name: src-data
+          emptyDir: {}
+      containers:
+        - name: nginx
+          image: gcr.io/[PROJECT_ID]/gcpug-nginx:v1
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          volumeMounts:
+            - mountPath: /var/www/html
+              name: src-data
+        - name: php
+          image: gcr.io/[PROJECT_ID]/gcpug-php:v1
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 9000
+            protocol: TCP
+          volumeMounts:
+            - mountPath: /var/www/html
+              name: src-data
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/sh", "-c", "cp -r /app/. /var/www/html"]
   

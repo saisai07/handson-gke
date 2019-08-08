@@ -146,6 +146,24 @@ kubectl -n gcpug get ing
 Pod内に2個コンテナがあるパターン
 今回はphpとnginxの２コンテナの構成にしています
 
+```
+cd phpapp/php
+```
+
+PHPコンテナのビルドを行います。
+```
+gcloud builds submit --tag=gcr.io/$PROJECT_ID/gcpug-php:v1 .
+```
+
+```
+cd ../nginx
+```
+
+Nginxコンテナのビルドを行います。
+```
+gcloud builds submit --tag=gcr.io/$PROJECT_ID/gcpug-nginx:v1 .
+```
+
 
 ## お掃除
 
