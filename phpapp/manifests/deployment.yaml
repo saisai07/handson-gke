@@ -22,6 +22,7 @@ spec:
       containers:
         - name: nginx
           image: gcr.io/[PROJECT_ID]/gcpug-nginx:v1
+          imagePullPolicy: Always
           ports:
           - containerPort: 8080
             protocol: TCP
