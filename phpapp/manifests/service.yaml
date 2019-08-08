@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: php-app-service
+  namespace: gcpug
+spec:
+  type: LoadBalancer
+  selector:
+    app: php-app
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  

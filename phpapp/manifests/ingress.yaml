@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: k8s-lb
+  namespace: gcpug
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "gcpug-go-ip"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /*
+        backend:
+          serviceName: go-app-service
+          servicePort: 8080
+      - path: /php/*
+        backend:
+          serviceName: php-app-service
+          servicePort: 8080
