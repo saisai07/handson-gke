@@ -164,12 +164,31 @@ Nginxコンテナのビルドを行います。
 gcloud builds submit --tag=gcr.io/$PROJECT_ID/gcpug-nginx:v1 .
 ```
 
+デプロイ
+
+```
+cd ../
+```
+
+```
+kubectl apply -f manifests/deployment.yaml
+```
+
+
+公開
+```
+kubectl apply -f manifests/service.yaml
+```
+```
+kubectl apply -f manifests/ingress.yaml
+```
 
 ## お掃除
 
 ```
-kubectl delete -f manifests/ingress.yaml
-kubectl delete -f manifests/service.yaml
+kubectl delete -f goapp/manifests/ingress.yaml
+kubectl delete -f goapp/manifests/service.yaml
+kubectl delete -f phpapp/manifests/service.yaml
 gcloud container clusters delete gcpug-sendai --zone=us-central1-a --async
 gcloud compute addresses delete gcpug-go-ip --global
 ```
