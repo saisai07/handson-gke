@@ -104,7 +104,7 @@ metadata:
   name: go-app-service
   namespace: gcpug
 spec:
-  type: NordPort
+  type: NodePort
   selector:
     app: go-app
   ports:
